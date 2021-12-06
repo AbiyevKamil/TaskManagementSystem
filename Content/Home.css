@@ -151,6 +151,9 @@
     border-radius: 12px;
     position: relative;
     min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
     .task-detail-container * {

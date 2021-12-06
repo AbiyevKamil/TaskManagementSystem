@@ -1,0 +1,45 @@
+﻿@model TaskManagementSystem.Models.RegisterModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>Register</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <div>
+            @Html.LabelFor(model => model.FullName, new { @class = "" })
+            @Html.EditorFor(model => model.FullName)
+            @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.Username, new { @class = "" })
+            @Html.EditorFor(model => model.Username)
+            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.Email, new { @class = "" })
+            @Html.EditorFor(model => model.Email)
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.Password, new { @class = "" })
+            @Html.PasswordFor(model => model.Password, new { @class = "" })
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.RePassword, new { @class = "" })
+            @Html.PasswordFor(model => model.RePassword, new { @class = "" })
+            @Html.ValidationMessageFor(model => model.RePassword, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            @Html.CheckBoxFor(model => model.IsManager, new { @class = "" })
+            @Html.LabelFor(model => model.IsManager, new { @class = "" })
+        </div>
+        <div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+        <input class="submit-btn" type="submit" value="Register" />
+    </div>
+}

@@ -14,7 +14,7 @@ namespace TaskManagementSystem.Entity
             Manager m = new Manager()
             {
                 Email = "kabiyev@std.beu.edu.az",
-                Fullname = "Kamil Abiyev",
+                FullName = "Kamil Abiyev",
                 Password = Crypto.HashPassword("123456"),
                 RegisteredDate = DateTime.Now,
                 Username = "kamil"
@@ -25,7 +25,7 @@ namespace TaskManagementSystem.Entity
             Worker w = new Worker()
             {
                 Email = "kamilabiyev1903@gmail.com",
-                Fullname = "Kamil Abiyev Worker",
+                FullName = "Kamil Abiyev Worker",
                 Password = Crypto.HashPassword("123456"),
                 RegisteredDate = DateTime.Now,
                 Username = "kamil_worker"
