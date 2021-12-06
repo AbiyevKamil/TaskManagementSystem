@@ -1,0 +1,56 @@
+﻿@model TaskManagementSystem.Entity.Task
+@{
+    ViewBag.Title = "TaskDetail";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<div class="task-detail-container">
+    <h2>@Model.Title</h2>
+    <p>
+        @Model.Description
+    </p>
+
+    <div class="task-footer">
+        <div class="task-users">
+            <p>
+                Manager: @Model.Manager.Username
+            </p>
+
+            <p>
+                Worker: @Model.Worker.Username
+            </p>
+        </div>
+
+        <div class="task-dates">
+            <p>
+                Started Date: @Model.StartDate.ToString("g")
+            </p>
+
+            <p>
+                End Date: @Model.EndDate.ToString("g")
+            </p>
+        </div>
+    </div>
+
+    @if (@Model.IsMissing)
+    {
+        <p class="status-missed">
+            Missed
+        </p>
+    }
+    else
+    {
+        if (@Model.IsCompleted)
+        {
+            <p class="status-completed">
+                Completed
+            </p>
+        }
+        else
+        {
+            <p class="status-progress">
+                In Progress
+            </p>
+        }
+    }
+</div>

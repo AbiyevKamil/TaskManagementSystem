@@ -1,0 +1,80 @@
+﻿@model IEnumerable<TaskManagementSystem.Entity.Task>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<h3 class="section-header">Public tasks</h3>
+<hr />
+@if (Model.Any())
+{
+    <div class="tasks-container">
+        @foreach (var task in Model)
+        {
+            <div class="task-container">
+                <a href="@Url.Action($"/TaskDetail/{task.Id}")">
+                    <div class="task-header-container">
+                        <p class="task-header">
+                            @task.Title
+                        </p>
+                        @if (task.IsMissing)
+                        {
+                            <p class="status-missed">
+                                Missed
+                            </p>
+                        }
+                        else
+                        {
+                            if (task.IsCompleted)
+                            {
+                                <p class="status-completed">
+                                    Completed
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="status-progress">
+                                    In Progress
+                                </p>
+                            }
+                        }
+                    </div>
+                    <div class="task-body">
+                        @if (task.Description.Length > 50)
+                        {
+                            <p class="task-desc">
+                                @String.Format($"{task.Description.Substring(0, 47)}...")
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="task-desc">
+                                @task.Description
+                            </p>
+                        }
+                        @*<p class="task-user">
+                                Manager: @task.Manager.Username
+                            </p>
+                            <p class="task-user">
+                                Worker: @task.Worker.Username
+                            </p>*@
+                    </div>
+                    @*<div class="task-footer">
+                            <p>
+                                Started date: @task.StartDate.ToString("g")
+                            </p>
+                            <p>
+                                End date: @task.EndDate.ToString("g")
+                            </p>
+                        </div>*@
+                </a>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p class="section-empty">
+        There is no public task.
+    </p>
+}
