@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using TaskManagementSystem.Entity;
 
 namespace TaskManagementSystem.Controllers
@@ -16,22 +18,25 @@ namespace TaskManagementSystem.Controllers
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
             Response.Cache.SetExpires(DateTime.UtcNow.AddHours(-1));
             Response.Cache.SetNoStore();
-            var cookie = Request.Cookies.Get("ASP.NET_SessionId");
-            //var token = Session["AuthToken"];
-            if (cookie != null)
+            if (Request.Cookies["AuthToken"] != null)
             {
-                int Id = Convert.ToInt32(cookie.Value.ToString());
-                var manager = context.Managers.FirstOrDefault(i => i.Id == Id);
-                if (manager != null)
+                var cValue = Request.Cookies["AuthToken"].Value;
+                if (!String.IsNullOrEmpty(cValue))
                 {
-                    ViewBag.User = manager;
-                }
-                else
-                {
-                    var worker = context.Workers.FirstOrDefault(i => i.Id == Id);
-                    if (worker != null)
+                    var cookie = Encoding.UTF8.GetString(MachineKey.Unprotect(Convert.FromBase64String(cValue)));
+                    int Id = Convert.ToInt32(cookie.ToString());
+                    var manager = context.Managers.FirstOrDefault(i => i.Id == Id);
+                    if (manager != null)
                     {
-                        ViewBag.User = worker;
+                        ViewBag.User = manager;
+                    }
+                    else
+                    {
+                        var worker = context.Workers.FirstOrDefault(i => i.Id == Id);
+                        if (worker != null)
+                        {
+                            ViewBag.User = worker;
+                        }
                     }
                 }
             }

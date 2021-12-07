@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Management System - @ViewBag.Title</title>
-    <link href="~/Content/Home.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/Form.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/modernizr-2.8.3.js"></script>
 </head>
@@ -19,11 +19,25 @@
                 {
                     <li>
                         @*<a href="#">Register</a>*@
-                        @Html.ActionLink("Register", "Register", "Account", new { }, new { @class = "nav_link" })
+                        @if (ViewContext.RouteData.Values["action"].ToString() == "Register")
+                        {
+                            @Html.ActionLink("Register", "Register", "Account", new { }, new { @class = "active_link" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Register", "Register", "Account", new { }, new { @class = "" })
+                        }
                     </li>
                     <li>
                         @*<a href="#">Login</a>*@
-                        @Html.ActionLink("Login", "Login", "Account", new { }, new { @class = "nav_link" })
+                        @if (ViewContext.RouteData.Values["action"].ToString() == "Login")
+                        {
+                            @Html.ActionLink("Login", "Login", "Account", new { }, new { @class = "active_link" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Login", "Login", "Account", new { }, new { @class = "" })
+                        }
                     </li>
                 }
                 else

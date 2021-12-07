@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using System.Web.Security;
 using TaskManagementSystem.Entity;
 using TaskManagementSystem.Models;
 
@@ -68,6 +70,28 @@ namespace TaskManagementSystem.Controllers
         [HttpGet]
         public ActionResult Login()
         {
+            if (Request.Cookies["AuthToken"] != null)
+            {
+                var cValue = Request.Cookies["AuthToken"].Value;
+                if (!String.IsNullOrEmpty(cValue))
+                {
+                    var cookie = Encoding.UTF8.GetString(MachineKey.Unprotect(Convert.FromBase64String(cValue)));
+                    int Id = Convert.ToInt32(cookie.ToString());
+                    var manager = context.Managers.FirstOrDefault(i => i.Id == Id);
+                    if (manager != null)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        var worker = context.Workers.FirstOrDefault(i => i.Id == Id);
+                        if (worker != null)
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
+                }
+            }
             return View();
         }
 
@@ -84,20 +108,21 @@ namespace TaskManagementSystem.Controllers
                 {
                     if (Crypto.VerifyHashedPassword(oldManagerUser.Password, model.Password))
                     {
-                        if (model.RememberMe)
-                        {
-                            Session.Timeout = 1440;
-                            Session["AuthToken"] = oldManagerUser.Id;
-                        }
-                        else
-                        {
-                            Session.Timeout = 60;
-                            Session["AuthToken"] = oldManagerUser.Id;
-                        }
+                        var cValue =
+                            Convert.ToBase64String(
+                                MachineKey.Protect(Encoding.UTF8.GetBytes(oldManagerUser.Id.ToString())));
+                        Response.Cookies["AuthToken"].Value = cValue;
+                        Response.Cookies["AuthToken"].Expires =
+                            model.RememberMe ? DateTime.Now.AddDays(3) : DateTime.Now.AddHours(1);
                         return RedirectToAction("Index", "Home");
                         //if (String.IsNullOrEmpty(returnUrl))
                         //    return RedirectToAction("Index", "Tasks");
                         //return RedirectToAction("Dashboard", "Manager");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Wrong password");
+                        return View(model);
                     }
                 }
                 var oldWorkerUser = context.Workers.FirstOrDefault(i => i.Email == model.Email);
@@ -105,26 +130,20 @@ namespace TaskManagementSystem.Controllers
                 {
                     if (Crypto.VerifyHashedPassword(oldWorkerUser.Password, model.Password))
                     {
-                        HttpCookie StudentCookies = new HttpCookie("StudentCookies")
-                        {
-                            Value = oldWorkerUser.Id.ToString(),
-                            Expires = model.RememberMe ? DateTime.Now.AddDays(3) : DateTime.Now.AddHours(1)
-                        };
-                        Response.Cookies.Add(StudentCookies);
-                        Response.Flush();
-                        //if (model.RememberMe)
-                        //{
-                        //    Session.Timeout = 1440;
-                        //    Session["AuthToken"] = oldWorkerUser.Id;
-                        //}
-                        //else
-                        //{
-                        //    Session.Timeout = 60;
-                        //    Session["AuthToken"] = oldWorkerUser.Id;
-                        //}
+                        var cValue =
+                            Convert.ToBase64String(
+                                MachineKey.Protect(Encoding.UTF8.GetBytes(oldWorkerUser.Id.ToString())));
+                        Response.Cookies["AuthToken"].Value = cValue;
+                        Response.Cookies["AuthToken"].Expires =
+                            model.RememberMe ? DateTime.Now.AddDays(3) : DateTime.Now.AddHours(1);
                         if (String.IsNullOrEmpty(returnUrl))
                             return RedirectToAction("Index", "Home");
                         //return RedirectToAction("Dashboard", "Worker");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Wrong password");
+                        return View(model);
                     }
                 }
                 ModelState.AddModelError("", "Email is not registered.");
@@ -135,8 +154,7 @@ namespace TaskManagementSystem.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult Logout()
         {
-            Session.Abandon();
-            Session.Remove("AuthToken");
+            Response.Cookies["AuthToken"].Value = "";
             return RedirectToAction("Index", "Home");
         }
     }
