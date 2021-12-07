@@ -12,6 +12,7 @@ namespace TaskManagementSystem.Entity
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public DateTime AddedDate { get; set; }
         public bool IsCompleted { get; set; }
         public bool IsPublic { get; set; }
         public bool IsMissing { get; set; }

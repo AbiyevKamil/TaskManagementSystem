@@ -81,8 +81,9 @@
 }
 
 .tasks-container {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-gap: 16px;
 }
 
 .task-container {
@@ -94,6 +95,7 @@
     position: relative;
     min-height: 220px;
     cursor: pointer;
+    width: 100%;
 }
 
     .task-container a {
@@ -181,4 +183,13 @@
 
 .task-users, .task-dates {
     flex: 0.5;
+}
+
+
+.logout-btn {
+    border: none;
+    background: #be0027;
+    color: #FFF;
+    padding: 6px 12px;
+    border-radius: 4px;
 }

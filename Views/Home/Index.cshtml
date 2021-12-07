@@ -40,10 +40,10 @@
                         }
                     </div>
                     <div class="task-body">
-                        @if (task.Description.Length > 50)
+                        @if (task.Description.Length > 70)
                         {
                             <p class="task-desc">
-                                @String.Format($"{task.Description.Substring(0, 47)}...")
+                                @String.Format($"{task.Description.Substring(0, 67)}...")
                             </p>
                         }
                         else

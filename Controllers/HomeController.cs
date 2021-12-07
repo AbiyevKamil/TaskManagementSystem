@@ -13,7 +13,29 @@ namespace TaskManagementSystem.Controllers
         private DataContext context = new DataContext();
         public ActionResult Index()
         {
-            var tasks = context.Tasks.Include(i => i.Worker).Include(i => i.Manager).Where(i => i.IsPublic).ToList().Select(i => new Task()
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Cache.SetExpires(DateTime.UtcNow.AddHours(-1));
+            Response.Cache.SetNoStore();
+            var cookie = Request.Cookies.Get("ASP.NET_SessionId");
+            //var token = Session["AuthToken"];
+            if (cookie != null)
+            {
+                int Id = Convert.ToInt32(cookie.Value.ToString());
+                var manager = context.Managers.FirstOrDefault(i => i.Id == Id);
+                if (manager != null)
+                {
+                    ViewBag.User = manager;
+                }
+                else
+                {
+                    var worker = context.Workers.FirstOrDefault(i => i.Id == Id);
+                    if (worker != null)
+                    {
+                        ViewBag.User = worker;
+                    }
+                }
+            }
+            var tasks = context.Tasks.Include(i => i.Worker).Include(i => i.Manager).Where(i => i.IsPublic).OrderByDescending(i => i.AddedDate).ToList().Select(i => new Task()
             {
                 Id = i.Id,
                 Title = i.Title,

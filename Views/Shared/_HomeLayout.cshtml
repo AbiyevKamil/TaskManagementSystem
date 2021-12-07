@@ -15,14 +15,30 @@
                 @Html.ActionLink("Task Manager", "Index", "Home", new { }, new { @class = "nav_brand" })
             </p>
             <ul class="nav_main--links">
-                <li>
-                    @*<a href="#">Register</a>*@
-                    @Html.ActionLink("Register", "Register", "Account", new { }, new { @class = "nav_link" })
-                </li>
-                <li>
-                    @*<a href="#">Login</a>*@
-                    @Html.ActionLink("Login", "Login", "Account", new { }, new { @class = "nav_link" })
-                </li>
+                @if (ViewBag.User == null)
+                {
+                    <li>
+                        @*<a href="#">Register</a>*@
+                        @Html.ActionLink("Register", "Register", "Account", new { }, new { @class = "nav_link" })
+                    </li>
+                    <li>
+                        @*<a href="#">Login</a>*@
+                        @Html.ActionLink("Login", "Login", "Account", new { }, new { @class = "nav_link" })
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        @Html.ActionLink($"{ViewBag.User.Username}", "Login", "Account", new { }, new { @class = "nav_link" })
+                    </li>
+                    <li>
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+                            <input class="logout-btn" type="submit" value="Logout" />
+                        }
+                    </li>
+                }
             </ul>
         </div>
     </div>

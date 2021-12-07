@@ -12,6 +12,7 @@ namespace TaskManagementSystem.Controllers
     public class AccountController : Controller
     {
         private DataContext context = new DataContext();
+
         [HttpGet]
         public ActionResult Register()
         {
@@ -70,6 +71,8 @@ namespace TaskManagementSystem.Controllers
             return View();
         }
 
+        // TAKE A LOOK HERE
+
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model)
         {
@@ -91,7 +94,7 @@ namespace TaskManagementSystem.Controllers
                             Session.Timeout = 60;
                             Session["AuthToken"] = oldManagerUser.Id;
                         }
-
+                        return RedirectToAction("Index", "Home");
                         //if (String.IsNullOrEmpty(returnUrl))
                         //    return RedirectToAction("Index", "Tasks");
                         //return RedirectToAction("Dashboard", "Manager");
@@ -102,11 +105,23 @@ namespace TaskManagementSystem.Controllers
                 {
                     if (Crypto.VerifyHashedPassword(oldWorkerUser.Password, model.Password))
                     {
-                        if (model.RememberMe)
+                        HttpCookie StudentCookies = new HttpCookie("StudentCookies")
                         {
-                            Session.Timeout = 1440;
-                            Session["AuthToken"] = oldWorkerUser.Id;
-                        }
+                            Value = oldWorkerUser.Id.ToString(),
+                            Expires = model.RememberMe ? DateTime.Now.AddDays(3) : DateTime.Now.AddHours(1)
+                        };
+                        Response.Cookies.Add(StudentCookies);
+                        Response.Flush();
+                        //if (model.RememberMe)
+                        //{
+                        //    Session.Timeout = 1440;
+                        //    Session["AuthToken"] = oldWorkerUser.Id;
+                        //}
+                        //else
+                        //{
+                        //    Session.Timeout = 60;
+                        //    Session["AuthToken"] = oldWorkerUser.Id;
+                        //}
                         if (String.IsNullOrEmpty(returnUrl))
                             return RedirectToAction("Index", "Home");
                         //return RedirectToAction("Dashboard", "Worker");
@@ -115,6 +130,14 @@ namespace TaskManagementSystem.Controllers
                 ModelState.AddModelError("", "Email is not registered.");
             }
             return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult Logout()
+        {
+            Session.Abandon();
+            Session.Remove("AuthToken");
+            return RedirectToAction("Index", "Home");
         }
     }
 }
