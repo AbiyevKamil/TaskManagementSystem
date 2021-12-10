@@ -4,34 +4,10 @@
     Layout = "~/Views/Shared/_ManagerDashLayout.cshtml";
 }
 
-<style>
-    .tasks {
-        width: 100%;
-    }
-
-        .tasks td, .tasks th {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-
-        .tasks tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .tasks tr:hover {
-            background-color: #ddd;
-        }
-
-        .tasks th {
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-align: left;
-            background-color: #04AA6D;
-            color: white;
-        }
-</style>
-
-<h3>My Tasks</h3>
+<div class="header">
+    <h3 class="header-text">My Tasks</h3>
+    <a class="header-link" href="@Url.Action("AddTask")">Add New Task</a>
+</div>
 <hr />
 @if (Model.Tasks.Any())
 {

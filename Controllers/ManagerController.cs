@@ -63,5 +63,21 @@ namespace TaskManagementSystem.Controllers
             }
             return RedirectToAction("Login", "Account");
         }
+
+        [HttpGet]
+        public ActionResult AddTask()
+        {
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult AddTask(Task model)
+        {
+            if (ModelState.IsValid)
+            {
+
+            }
+            return View(model);
+        }
     }
 }

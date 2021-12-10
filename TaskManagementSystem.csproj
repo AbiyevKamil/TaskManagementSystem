@@ -192,6 +192,7 @@
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Shared\_ManagerDashLayout.cshtml" />
     <Content Include="Views\Manager\Dashboard.cshtml" />
+    <Content Include="Views\Manager\AddTask.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

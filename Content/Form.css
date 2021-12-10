@@ -175,6 +175,7 @@ body {
     margin: 10px auto 5px auto;
     letter-spacing: 1.3px;
     transition: all 0.3s linear;
+    cursor: pointer;
 }
 
     .submit-btn:hover {
