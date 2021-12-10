@@ -15,9 +15,6 @@ namespace TaskManagementSystem.Controllers
         private DataContext context = new DataContext();
         public ActionResult Index()
         {
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            Response.Cache.SetExpires(DateTime.UtcNow.AddHours(-1));
-            Response.Cache.SetNoStore();
             if (Request.Cookies["AuthToken"] != null)
             {
                 var cValue = Request.Cookies["AuthToken"].Value;

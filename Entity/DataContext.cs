@@ -16,6 +16,7 @@ namespace TaskManagementSystem.Entity
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Worker> Workers { get; set; }
         public DbSet<Manager> Managers { get; set; }
+        public DbSet<RecoveryCode> RecoveryCodes { get; set; }
 
     }
 }

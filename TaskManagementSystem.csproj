@@ -111,6 +111,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\DashboardManager.css" />
     <Content Include="Content\Form.css" />
     <Content Include="Content\Home.css" />
     <Content Include="Content\Site.css" />
@@ -136,17 +137,23 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="Entity\DataContext.cs" />
     <Compile Include="Entity\DataInitializer.cs" />
     <Compile Include="Entity\Manager.cs" />
+    <Compile Include="Entity\RecoveryCode.cs" />
     <Compile Include="Entity\Task.cs" />
     <Compile Include="Entity\Worker.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CheckRecoveryCodeModel.cs" />
+    <Compile Include="Models\ForgotPassEmail.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\ManagerDashModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Models\ResetModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +187,11 @@
     <Content Include="Scripts\jquery-3.6.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.6.0.min.map" />
     <Content Include="Views\Shared\_FormLayout.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\CheckRecoveryCode.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Shared\_ManagerDashLayout.cshtml" />
+    <Content Include="Views\Manager\Dashboard.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

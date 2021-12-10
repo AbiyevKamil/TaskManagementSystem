@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Web;
 using System.Web.Helpers;
@@ -14,6 +16,9 @@ namespace TaskManagementSystem.Controllers
     public class AccountController : Controller
     {
         private DataContext context = new DataContext();
+        private readonly string generalEmail = "stphoenix2002@gmail.com";
+        private readonly string generalPass = "akamil2002";
+        private readonly string companyName = "Task Management Company";
 
         [HttpGet]
         public ActionResult Register()
@@ -62,7 +67,7 @@ namespace TaskManagementSystem.Controllers
                         return RedirectToAction("Login");
                     }
                 }
-                ModelState.AddModelError("", "Username or email is already registered");
+                ModelState.AddModelError("", "Username or model.Email is already registered");
             }
             return View(model);
         }
@@ -156,6 +161,153 @@ namespace TaskManagementSystem.Controllers
         {
             Response.Cookies["AuthToken"].Value = "";
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult ForgotPassword(ForgotPassEmail model)
+        {
+            if (ModelState.IsValid)
+            {
+                var oldWorkerEmail = context.Workers.FirstOrDefault(i => i.Email == model.Email);
+                if (oldWorkerEmail != null)
+                {
+                    SendEmail(model.Email);
+                    return RedirectToAction("CheckRecoveryCode", new
+                    {
+                        email = model.Email
+                    });
+                }
+                var oldManagerEmail = context.Managers.FirstOrDefault(i => i.Email == model.Email);
+                if (oldManagerEmail != null)
+                {
+                    SendEmail(model.Email);
+                    return RedirectToAction("CheckRecoveryCode", new
+                    {
+                        email = model.Email
+                    });
+                }
+                ModelState.AddModelError("", "Email is not registered");
+            }
+            return View(model);
+        }
+
+        [HttpGet, Route("Account/CheckRecoveryCode/{email}")]
+        public ActionResult CheckRecoveryCode(string email)
+        {
+            return View();
+        }
+
+        [HttpPost, Route("Account/CheckRecoveryCode/{email}")]
+        public ActionResult CheckRecoveryCode(CheckRecoveryCodeModel model, string email)
+        {
+            DeleteOldData();
+            if (ModelState.IsValid)
+            {
+                var userDataFromEmail = context.RecoveryCodes.FirstOrDefault(i => i.UserEmail == email);
+                if (userDataFromEmail != null)
+                {
+                    if (model.Code == userDataFromEmail.Code)
+                    {
+                        return RedirectToAction("ResetPassword", new
+                        {
+                            email = email
+                        });
+                    }
+                }
+            }
+            return View(model);
+        }
+
+        [HttpGet, Route("Account/ResetPassword/{email}")]
+        public ActionResult ResetPassword(string email)
+        {
+            return View();
+        }
+
+        [HttpPost, Route("Account/ResetPassword/{email}")]
+        public ActionResult ResetPassword(ResetModel model, string email)
+        {
+            if (ModelState.IsValid)
+            {
+                var userManager = context.Managers.FirstOrDefault(i => i.Email == email);
+                if (userManager != null)
+                {
+                    userManager.Password = Crypto.HashPassword(model.Password);
+                    context.SaveChanges();
+                    return RedirectToAction("Login");
+                }
+                var userWorker = context.Workers.FirstOrDefault(i => i.Email == email);
+                if (userWorker != null)
+                {
+                    userWorker.Password = Crypto.HashPassword(model.Password);
+                    context.SaveChanges();
+                    return RedirectToAction("Login");
+                }
+            }
+            return View(model);
+        }
+
+        private void DeleteOldData()
+        {
+            var dataMustBeDeleted = context.RecoveryCodes.Where(i => i.DeleteTime < DateTime.Now).ToList();
+            foreach (var data in dataMustBeDeleted)
+            {
+                context.RecoveryCodes.Remove(data);
+            }
+
+            context.SaveChanges();
+        }
+
+        private void DeleteOldDataByEmail(string email)
+        {
+            var dataMustBeDeleted = context.RecoveryCodes.Where(i => i.UserEmail == email).ToList();
+            foreach (var data in dataMustBeDeleted)
+            {
+                context.RecoveryCodes.Remove(data);
+            }
+
+            context.SaveChanges();
+        }
+
+        private int GetRandomCode()
+        {
+            Random r = new Random();
+            return r.Next(10000, 99999);
+        }
+
+        private void SendEmail(string email)
+        {
+            string recoveryCode = (GetRandomCode()).ToString();
+            string emailBody = $"Your reset code: <b>{recoveryCode}</b>";
+            MailMessage message = new MailMessage();
+            SmtpClient smtp = new SmtpClient();
+            message.From = new MailAddress(generalEmail);
+            message.To.Add(new MailAddress(email));
+            message.Subject = $"Password Recovery | {companyName}";
+            message.IsBodyHtml = true;
+            message.Body = emailBody;
+            smtp.Port = 587;
+            smtp.Host = "smtp.gmail.com";
+            smtp.EnableSsl = true;
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = new NetworkCredential(generalEmail, generalPass);
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtp.Send(message);
+            DeleteOldDataByEmail(email);
+            RecoveryCode rc = new RecoveryCode()
+            {
+                Code = recoveryCode,
+                UserEmail = email,
+                DeleteTime = DateTime.Now.AddMinutes(15),
+            };
+            context.RecoveryCodes.Add(rc);
+            context.SaveChanges();
         }
     }
 }

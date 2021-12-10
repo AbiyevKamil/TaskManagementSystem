@@ -1,0 +1,91 @@
+﻿@model TaskManagementSystem.Models.ManagerDashModel
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_ManagerDashLayout.cshtml";
+}
+
+<style>
+    .tasks {
+        width: 100%;
+    }
+
+        .tasks td, .tasks th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        .tasks tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tasks tr:hover {
+            background-color: #ddd;
+        }
+
+        .tasks th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #04AA6D;
+            color: white;
+        }
+</style>
+
+<h3>My Tasks</h3>
+<hr />
+@if (Model.Tasks.Any())
+{
+    <table class="tasks">
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Added Date</th>
+            <th>Status</th>
+            <th>Is Public</th>
+            <th>Worker</th>
+            <th></th>
+        </tr>
+        @foreach (var task in Model.Tasks)
+        {
+            <tr>
+                <td>@task.Title</td>
+                <td>@task.Description</td>
+                <td>@task.StartDate.ToString("g")</td>
+                <td>@task.EndDate.ToString("g")</td>
+                <td>@task.AddedDate.ToString("g")</td>
+
+                @if (task.IsMissing)
+                {
+                    <td class="status-missed">Missing</td>
+                }
+                else
+                {
+                    if (task.IsCompleted)
+                    {
+                        <td class="status-completed">Completed</td>
+                    }
+                    else
+                    {
+                        <td class="status-progress">In Progress</td>
+                    }
+                }
+                <td>@task.IsPublic</td>
+                <td>@task.Worker.Username</td>
+                <td>
+                    <a class="more-link" href="@Url.Action($"/MyTaskDetail/{task.Id}")">More</a>
+                    <a class="edit-link" href="@Url.Action($"/EditMyTask/{task.Id}")">Edit</a>
+                    <a class="delete-link" href="@Url.Action($"/DeleteMyTask/{task.Id}")">Delete</a>
+                </td>
+            </tr>
+        }
+    </table>
+
+}
+else
+{
+    <p>
+        You don't have any task
+    </p>
+}

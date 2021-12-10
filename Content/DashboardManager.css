@@ -1,0 +1,155 @@
+﻿
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+}
+
+.navbar-container {
+    background-color: #222222;
+    position: sticky;
+    position: -webkit-sticky;
+    z-index: 1022;
+    height: 60px;
+    padding: 0 10vw;
+}
+
+.nav_main {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+    margin: 0 auto;
+    color: #fff;
+}
+
+.nav_main--title {
+    font-size: 28px;
+    letter-spacing: 0.02em;
+    font-weight: 600;
+    margin: 0;
+    padding: 8px 0;
+}
+
+.nav_brand {
+    text-decoration: none;
+    color: #ffffff;
+    transition: all 0.2s linear;
+}
+
+    .nav_brand:hover {
+        text-decoration: none;
+        color: rgba(199,199,199,0.9);
+    }
+
+.nav_main--links {
+    display: flex;
+    align-items: center;
+    grid-gap: 16px;
+    padding: 0;
+    margin: 0;
+    height: 60px;
+}
+
+    .nav_main--links li {
+        list-style: none;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .nav_main--links a {
+        text-decoration: none;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px 12px;
+        transition: all 0.3s linear;
+        height: 100%;
+        letter-spacing: 0.02em;
+        font-weight: 500;
+    }
+
+        .nav_main--links a:hover {
+            background-color: #090909;
+            color: #fff;
+            text-decoration: none;
+        }
+
+.active_link {
+    background-color: #090909;
+    color: #fff;
+    text-decoration: none;
+}
+
+.body-container {
+    padding: 10px 10vw;
+}
+
+.link {
+    color: #ffd900;
+}
+
+    .link:hover {
+        color: #ffd900;
+    }
+
+
+.logout-btn {
+    border: none;
+    background: #be0027;
+    color: #FFF;
+    padding: 6px 12px;
+    border-radius: 4px;
+}
+
+
+.status-missed, .status-completed, .status-progress {
+    font-weight: bold;
+    font-size: 11px;
+    border-radius: 4px;
+    color: #090909;
+    user-select: none;
+}
+
+.status-missed {
+    background-color: #be0027;
+}
+
+.status-completed {
+    background-color: #279b37;
+}
+
+.status-progress {
+    background-color: #ffd900;
+}
+
+.more-link, .edit-link, .delete-link {
+    padding: 3px 5px;
+    text-decoration: none;
+    color: #fff;
+    margin: 2px;
+    border-radius: 4px;
+}
+
+    .more-link:hover, .edit-link:hover, .delete-link:hover {
+        text-decoration: none;
+        color: #fff;
+    }
+
+.more-link {
+    background: #279b37;
+}
+
+.edit-link {
+    background: #ffd900;
+}
+
+.delete-link {
+    background: #be0027;
+}

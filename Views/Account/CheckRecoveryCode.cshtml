@@ -1,0 +1,27 @@
+﻿@model TaskManagementSystem.Models.CheckRecoveryCodeModel
+@{
+    ViewBag.Title = "CheckRecoveryCode";
+    Layout = "~/Views/Shared/_FormLayout.cshtml";
+}
+
+
+<div class="form-container">
+    <h2 class="form-header">Check Recovery Code</h2>
+    <p class="check-lbl">Please, check your email (inbox and spams).</p>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="inputs-container">
+            <div class="input-container">
+                @Html.LabelFor(model => model.Code, new { @class = "" })
+                @Html.EditorFor(model => model.Code)
+                @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+            </div>
+            <div class="summary-container">
+                @Html.ValidationSummary(true, "", new { @class = "" })
+            </div>
+            <input class="submit-btn" type="submit" value="Check" />
+        </div>
+    }
+</div>
+
