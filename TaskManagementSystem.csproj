@@ -135,6 +135,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Entity\DataContext.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="Models\ManagerDetailModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\ResetModel.cs" />
+    <Compile Include="Models\TaskUpdateModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +197,9 @@
     <Content Include="Views\Manager\Dashboard.cshtml" />
     <Content Include="Views\Manager\AddTask.cshtml" />
     <Content Include="Views\Manager\MyTaskDetail.cshtml" />
+    <Content Include="Views\Error\PageNotFound.cshtml" />
+    <Content Include="Views\Manager\EditMyTask.cshtml" />
+    <Content Include="Views\Manager\DeleteMyTask.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

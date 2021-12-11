@@ -48,7 +48,7 @@ namespace TaskManagementSystem.Controllers
                 Worker = i.Worker,
                 StartDate = i.StartDate,
                 EndDate = i.EndDate,
-                IsMissing = i.EndDate < DateTime.Now ? true : false
+                IsMissing = i.IsCompleted ? false : i.EndDate < DateTime.Now ? true : false
             });
             return View(tasks);
         }

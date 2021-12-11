@@ -1,0 +1,63 @@
+﻿@model TaskManagementSystem.Entity.Task
+@{
+    ViewBag.Title = "DeleteMyTask";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<div class="task-detail-container">
+    <div>
+        <h2>@Model.Title</h2>
+        <p>
+            @Model.Description
+        </p>
+    </div>
+    <div class="task-footer">
+        <div class="task-users">
+            <p>
+                Worker: @Model.Worker.Username
+            </p>
+        </div>
+
+        <div class="task-dates">
+            <p>
+                Started Date: @Model.StartDate.ToString("g")
+            </p>
+
+            <p>
+                End Date: @Model.EndDate.ToString("g")
+            </p>
+        </div>
+    </div>
+
+    @if (Model.IsMissing)
+    {
+        <p class="status-missed">
+            Missed
+        </p>
+    }
+    else
+    {
+        if (Model.IsCompleted)
+        {
+            <p class="status-completed">
+                Completed
+            </p>
+        }
+        else
+        {
+            <p class="status-progress">
+                In Progress
+            </p>
+        }
+    }
+</div>
+
+<h4 style="margin-top: 10px;">Are you sure that you want to <b>delete</b> this task?</h4>
+
+@using (Html.BeginForm("DeleteMyTaskConfirmed", "Manager", new { id = Model.Id }))
+{
+    <div style="margin: 10px 0;">
+        <input class="logout-btn" type="submit" value="Yes" />
+        @Html.ActionLink("Back to Dashboard", "Dashboard", "", new { @style = "text-decoration: none; color: #279b37; margin-left: 15px" })
+    </div>
+}
