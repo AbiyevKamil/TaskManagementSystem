@@ -17,7 +17,6 @@
             <th>Description</th>
             <th>Start Date</th>
             <th>End Date</th>
-            <th>Added Date</th>
             <th>Status</th>
             <th>Is Public</th>
             <th>Worker</th>
@@ -30,7 +29,6 @@
                 <td>@task.Description</td>
                 <td>@task.StartDate.ToString("g")</td>
                 <td>@task.EndDate.ToString("g")</td>
-                <td>@task.AddedDate.ToString("g")</td>
 
                 @if (task.IsMissing)
                 {

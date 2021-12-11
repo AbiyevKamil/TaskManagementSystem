@@ -9,6 +9,7 @@ using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Security;
 using TaskManagementSystem.Entity;
+using TaskManagementSystem.Helpers;
 using TaskManagementSystem.Models;
 
 namespace TaskManagementSystem.Controllers
@@ -100,12 +101,10 @@ namespace TaskManagementSystem.Controllers
             return View();
         }
 
-        // TAKE A LOOK HERE
 
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model)
         {
-            string returnUrl = Request.Params["returnUrl"];
             if (ModelState.IsValid)
             {
                 var oldManagerUser = context.Managers.FirstOrDefault(i => i.Email == model.Email);
@@ -113,16 +112,11 @@ namespace TaskManagementSystem.Controllers
                 {
                     if (Crypto.VerifyHashedPassword(oldManagerUser.Password, model.Password))
                     {
-                        var cValue =
-                            Convert.ToBase64String(
-                                MachineKey.Protect(Encoding.UTF8.GetBytes(oldManagerUser.Id.ToString())));
+                        var cValue = Hasher.Encrypt(oldManagerUser.Id.ToString());
                         Response.Cookies["AuthToken"].Value = cValue;
                         Response.Cookies["AuthToken"].Expires =
                             model.RememberMe ? DateTime.Now.AddDays(3) : DateTime.Now.AddHours(1);
                         return RedirectToAction("Index", "Home");
-                        //if (String.IsNullOrEmpty(returnUrl))
-                        //    return RedirectToAction("Index", "Tasks");
-                        //return RedirectToAction("Dashboard", "Manager");
                     }
                     else
                     {
@@ -136,14 +130,11 @@ namespace TaskManagementSystem.Controllers
                     if (Crypto.VerifyHashedPassword(oldWorkerUser.Password, model.Password))
                     {
                         var cValue =
-                            Convert.ToBase64String(
-                                MachineKey.Protect(Encoding.UTF8.GetBytes(oldWorkerUser.Id.ToString())));
+                            Hasher.Encrypt(oldWorkerUser.Id.ToString());
                         Response.Cookies["AuthToken"].Value = cValue;
                         Response.Cookies["AuthToken"].Expires =
                             model.RememberMe ? DateTime.Now.AddDays(3) : DateTime.Now.AddHours(1);
-                        if (String.IsNullOrEmpty(returnUrl))
-                            return RedirectToAction("Index", "Home");
-                        //return RedirectToAction("Dashboard", "Worker");
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
@@ -180,7 +171,7 @@ namespace TaskManagementSystem.Controllers
                     SendEmail(model.Email);
                     return RedirectToAction("CheckRecoveryCode", new
                     {
-                        email = model.Email
+                        email = Hasher.EncryptEmail(model.Email)
                     });
                 }
                 var oldManagerEmail = context.Managers.FirstOrDefault(i => i.Email == model.Email);
@@ -189,7 +180,7 @@ namespace TaskManagementSystem.Controllers
                     SendEmail(model.Email);
                     return RedirectToAction("CheckRecoveryCode", new
                     {
-                        email = model.Email
+                        email = Hasher.EncryptEmail(model.Email)
                     });
                 }
                 ModelState.AddModelError("", "Email is not registered");
@@ -206,6 +197,14 @@ namespace TaskManagementSystem.Controllers
         [HttpPost, Route("Account/CheckRecoveryCode/{email}")]
         public ActionResult CheckRecoveryCode(CheckRecoveryCodeModel model, string email)
         {
+            try
+            {
+                email = Hasher.DecryptEmail(email);
+            }
+            catch
+            {
+                return RedirectToAction("Login");
+            }
             DeleteOldData();
             if (ModelState.IsValid)
             {
@@ -214,12 +213,14 @@ namespace TaskManagementSystem.Controllers
                 {
                     if (model.Code == userDataFromEmail.Code)
                     {
+                        email = Hasher.EncryptEmail(model.Email);
                         return RedirectToAction("ResetPassword", new
                         {
-                            email = email
+                            email
                         });
                     }
                 }
+                ModelState.AddModelError("", "Code is not valid.");
             }
             return View(model);
         }
@@ -233,6 +234,15 @@ namespace TaskManagementSystem.Controllers
         [HttpPost, Route("Account/ResetPassword/{email}")]
         public ActionResult ResetPassword(ResetModel model, string email)
         {
+            try
+            {
+                email = Hasher.DecryptEmail(email);
+                email = Hasher.DecryptEmail(email);
+            }
+            catch
+            {
+                return RedirectToAction("Login");
+            }
             if (ModelState.IsValid)
             {
                 var userManager = context.Managers.FirstOrDefault(i => i.Email == email);

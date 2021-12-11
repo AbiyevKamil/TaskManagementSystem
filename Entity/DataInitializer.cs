@@ -45,7 +45,6 @@ namespace TaskManagementSystem.Entity
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(15),
                 IsPublic = true,
-                AddedDate = DateTime.Now,
             };
             context.Tasks.Add(t);
             Task t1 = new Task()
@@ -59,7 +58,6 @@ namespace TaskManagementSystem.Entity
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(5),
                 IsPublic = true,
-                AddedDate = DateTime.Now,
             };
             context.Tasks.Add(t1);
             Task t2 = new Task()
@@ -73,7 +71,6 @@ namespace TaskManagementSystem.Entity
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(6),
                 IsPublic = true,
-                AddedDate = DateTime.Now,
             };
             context.Tasks.Add(t2);
             Task t3 = new Task()
@@ -87,7 +84,6 @@ namespace TaskManagementSystem.Entity
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(10),
                 IsPublic = true,
-                AddedDate = DateTime.Now,
             };
             context.Tasks.Add(t3);
             context.SaveChanges();

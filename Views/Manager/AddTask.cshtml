@@ -1,11 +1,12 @@
-﻿@model TaskManagementSystem.Entity.Task
+﻿@model TaskManagementSystem.Models.AddTaskModel
 @{
     ViewBag.Title = "AddTask";
 }
 
 <link href="~/Content/Form.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
 
-<div class="body-container">
+<div class="body-container full-height-container">
     <div class="form-container">
         <h2 class="form-header">Add New Task</h2>
         @using (Html.BeginForm())
@@ -23,14 +24,14 @@
                     @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                 </div>
                 <div class="input-container">
-                    @Html.LabelFor(model => model.StartDate, new { @class = "" })
-                    @Html.EditorFor(model => model.StartDate, new { @class = "" })
-                    @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
-                </div>
-                <div class="input-container">
                     @Html.LabelFor(model => model.EndDate, new { @class = "" })
                     @Html.EditorFor(model => model.EndDate, new { @class = "" })
                     @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                </div>
+                <div class="dropdown-container">
+                    @Html.LabelFor(model => model.WorkerId, new { @class = "" })
+                    @Html.DropDownList("WorkerId", null, htmlAttributes: new { @class = "" })
+                    @Html.ValidationMessageFor(model => model.WorkerId, "", new { @class = "text-danger" })
                 </div>
                 <div class="check-container">
                     @Html.CheckBoxFor(model => model.IsPublic, new { @class = "" })
@@ -42,5 +43,8 @@
                 <input class="submit-btn" type="submit" value="Add" />
             </div>
         }
+        <p class="link-container">
+            @Html.ActionLink("Back to Dashboard", "Dashboard", "Manager", new { }, new { @class = "link" })
+        </p>
     </div>
 </div>

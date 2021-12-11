@@ -37,7 +37,7 @@ namespace TaskManagementSystem.Controllers
                     }
                 }
             }
-            var tasks = context.Tasks.Include(i => i.Worker).Include(i => i.Manager).Where(i => i.IsPublic).OrderByDescending(i => i.AddedDate).ToList().Select(i => new Task()
+            var tasks = context.Tasks.Include(i => i.Worker).Include(i => i.Manager).Where(i => i.IsPublic).OrderByDescending(i => i.StartDate).ToList().Select(i => new Task()
             {
                 Id = i.Id,
                 Title = i.Title,
