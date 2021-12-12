@@ -24,6 +24,29 @@ namespace TaskManagementSystem.Controllers
         [HttpGet]
         public ActionResult Register()
         {
+            if (Request.Cookies["AuthToken"] != null)
+            {
+                var cValue = Request.Cookies["AuthToken"].Value;
+                if (!String.IsNullOrEmpty(cValue))
+                {
+                    var cookie = Encoding.UTF8.GetString(MachineKey.Unprotect(Convert.FromBase64String(cValue)));
+                    int Id = Convert.ToInt32(cookie.ToString());
+                    var manager = context.Managers.FirstOrDefault(i => i.Id == Id);
+                    if (manager != null)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        var worker = context.Workers.FirstOrDefault(i => i.Id == Id);
+                        if (worker != null)
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
+                }
+            }
+
             return View();
         }
 
@@ -157,6 +180,29 @@ namespace TaskManagementSystem.Controllers
         [HttpGet]
         public ActionResult ForgotPassword()
         {
+            if (Request.Cookies["AuthToken"] != null)
+            {
+                var cValue = Request.Cookies["AuthToken"].Value;
+                if (!String.IsNullOrEmpty(cValue))
+                {
+                    var cookie = Encoding.UTF8.GetString(MachineKey.Unprotect(Convert.FromBase64String(cValue)));
+                    int Id = Convert.ToInt32(cookie.ToString());
+                    var manager = context.Managers.FirstOrDefault(i => i.Id == Id);
+                    if (manager != null)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        var worker = context.Workers.FirstOrDefault(i => i.Id == Id);
+                        if (worker != null)
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
+                }
+            }
+
             return View();
         }
 
@@ -191,6 +237,29 @@ namespace TaskManagementSystem.Controllers
         [HttpGet, Route("Account/CheckRecoveryCode/{email}")]
         public ActionResult CheckRecoveryCode(string email)
         {
+            if (Request.Cookies["AuthToken"] != null)
+            {
+                var cValue = Request.Cookies["AuthToken"].Value;
+                if (!String.IsNullOrEmpty(cValue))
+                {
+                    var cookie = Encoding.UTF8.GetString(MachineKey.Unprotect(Convert.FromBase64String(cValue)));
+                    int Id = Convert.ToInt32(cookie.ToString());
+                    var manager = context.Managers.FirstOrDefault(i => i.Id == Id);
+                    if (manager != null)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        var worker = context.Workers.FirstOrDefault(i => i.Id == Id);
+                        if (worker != null)
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
+                }
+            }
+
             return View();
         }
 
@@ -228,6 +297,28 @@ namespace TaskManagementSystem.Controllers
         [HttpGet, Route("Account/ResetPassword/{email}")]
         public ActionResult ResetPassword(string email)
         {
+            if (Request.Cookies["AuthToken"] != null)
+            {
+                var cValue = Request.Cookies["AuthToken"].Value;
+                if (!String.IsNullOrEmpty(cValue))
+                {
+                    var cookie = Encoding.UTF8.GetString(MachineKey.Unprotect(Convert.FromBase64String(cValue)));
+                    int Id = Convert.ToInt32(cookie.ToString());
+                    var manager = context.Managers.FirstOrDefault(i => i.Id == Id);
+                    if (manager != null)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        var worker = context.Workers.FirstOrDefault(i => i.Id == Id);
+                        if (worker != null)
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
+                }
+            }
             return View();
         }
 
