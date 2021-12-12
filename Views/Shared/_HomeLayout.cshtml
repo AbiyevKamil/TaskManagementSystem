@@ -37,9 +37,9 @@
                     }
                     else
                     {
-                        @*<li>
-                                @Html.ActionLink($"{ViewBag.User.Username}", "Dashboard", "Worker", new { }, new { @class = "nav_link" })
-                            </li>*@
+                        <li>
+                            @Html.ActionLink($"{ViewBag.User.Username}", "Dashboard", "Worker", new { }, new { @class = "nav_link" })
+                        </li>
                     }
                     <li>
                         @using (Html.BeginForm("Logout", "Account"))

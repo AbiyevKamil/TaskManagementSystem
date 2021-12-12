@@ -1,0 +1,103 @@
+﻿@using TaskManagementSystem.Models
+@model WorkerTaskUpdateModel
+@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<style>
+    .edit-btn {
+        border: none;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #fff;
+        margin: 2px;
+        border-radius: 4px;
+        background: #ffd900;
+        margin-left: 15px;
+    }
+
+    .check-container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 5px 0;
+    }
+
+        .check-container input {
+            width: 15px;
+            height: 15px;
+            margin-right: 3px;
+        }
+
+        .check-container label {
+            user-select: none;
+        }
+
+    .inputs-container {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+</style>
+
+
+<div>
+    <div class="task-detail-container">
+        <div>
+            <h2>@ViewBag.Task.Title</h2>
+            <p>
+                @ViewBag.Task.Description
+            </p>
+        </div>
+        <div class="task-footer">
+            <div class="task-users">
+                <p>
+                    Worker: @ViewBag.Task.Worker.Username
+                </p>
+            </div>
+
+            <div class="task-dates">
+                <p>
+                    Started Date: @ViewBag.Task.StartDate.ToString("g")
+                </p>
+
+                <p>
+                    End Date: @ViewBag.Task.EndDate.ToString("g")
+                </p>
+            </div>
+        </div>
+
+        @if (@ViewBag.Task.IsMissing)
+        {
+            <p class="status-missed">
+                Missed
+            </p>
+        }
+        else
+        {
+            if (@ViewBag.Task.IsCompleted)
+            {
+                <p class="status-completed">
+                    Completed
+                </p>
+            }
+            else
+            {
+                <p class="status-progress">
+                    In Progress
+                </p>
+            }
+        }
+    </div>
+    @using (Html.BeginForm())
+    {
+        <div class="inputs-container">
+            @Html.HiddenFor(model => model.Id)
+            <div class="check-container">
+                @Html.CheckBoxFor(model => model.IsCompleted, new { @class = "" })
+                @Html.LabelFor(model => model.IsCompleted, new { @class = "" })
+            </div>
+            <input class="edit-btn" type="submit" value="Update" />
+        </div>
+    }
+</div>

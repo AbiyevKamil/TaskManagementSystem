@@ -1,0 +1,59 @@
+﻿@model TaskManagementSystem.Models.WorkerDetailModel
+@{
+    ViewBag.Title = "MyTaskDetail";
+    Layout = "~/Views/Shared/_WorkerDashLayout.cshtml";
+}
+
+
+<link href="~/Content/Home.css" rel="stylesheet" />
+
+<div class="task-detail-container">
+    <div>
+        <h2>@Model.Task.Title</h2>
+        <p>
+            @Model.Task.Description
+        </p>
+    </div>
+    <div class="task-footer">
+        <div class="task-users">
+            <p>
+                Worker: @Model.Task.Worker.Username
+            </p>
+        </div>
+
+        <div class="task-dates">
+            <p>
+                Started Date: @Model.Task.StartDate.ToString("g")
+            </p>
+
+            <p>
+                End Date: @Model.Task.EndDate.ToString("g")
+            </p>
+        </div>
+    </div>
+
+    @if (@Model.Task.IsMissing)
+    {
+        <p class="status-missed">
+            Missed
+        </p>
+    }
+    else
+    {
+        if (@Model.Task.IsCompleted)
+        {
+            <p class="status-completed">
+                Completed
+            </p>
+        }
+        else
+        {
+            <p class="status-progress">
+                In Progress
+            </p>
+        }
+    }
+</div>
+
+
+

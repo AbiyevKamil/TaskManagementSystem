@@ -1,0 +1,69 @@
+﻿@model TaskManagementSystem.Models.WorkerDashModel
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_WorkerDashLayout.cshtml";
+}
+
+
+<div class="header">
+    <h3>My Tasks</h3>
+</div>
+<hr />
+@if (Model.Tasks.Any())
+{
+    <table class="tasks">
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+            <th>Is Public</th>
+            <th>Worker</th>
+            <th></th>
+        </tr>
+        @foreach (var task in Model.Tasks)
+        {
+            <tr>
+                <td>@task.Title</td>
+                <td>@task.Description</td>
+                <td>@task.StartDate.ToString("g")</td>
+                <td>@task.EndDate.ToString("g")</td>
+
+                @if (task.IsMissing)
+                {
+                    <td class="status-missed">Missing</td>
+                }
+                else
+                {
+                    if (task.IsCompleted)
+                    {
+                        <td class="status-completed">Completed</td>
+                    }
+                    else
+                    {
+                        <td class="status-progress">In Progress</td>
+                    }
+                }
+                <td>@task.IsPublic</td>
+                <td>@task.Worker.Username</td>
+                <td>
+                    <a class="more-link" href="@Url.Action($"/MyTaskDetail/{task.Id}")">More</a>
+                    @if (!task.IsMissing && !task.IsCompleted)
+                    {
+                        <a class="edit-link" href="@Url.Action($"/EditMyTask/{task.Id}")">Edit</a>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+
+}
+else
+{
+    <p>
+        You don't have any task
+    </p>
+}
+
+

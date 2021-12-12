@@ -56,7 +56,7 @@ namespace TaskManagementSystem.Controllers
                         if (worker != null)
                         {
                             // Redirect to Worker Dashboard
-                            //return RedirectToAction("Dashboard", "Worker");
+                            return RedirectToAction("Dashboard", "Worker");
                         }
                     }
                 }

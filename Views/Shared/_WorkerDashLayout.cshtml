@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management System - @ViewBag.Title</title>
+    <link href="~/Content/DashboardManager.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div class="navbar-container">
+        <div class="nav_main">
+            <p class="nav_main--title">
+                @Html.ActionLink("Task Manager", "Index", "Home", new { }, new { @class = "nav_brand" })
+            </p>
+            <ul class="nav_main--links">
+
+                <li>
+                    @Html.ActionLink($"{Model.Worker.Username}", "Dashboard", "Manager", new { }, new { @class = "nav_link" })
+                </li>
+                <li>
+                    @using (Html.BeginForm("Logout", "Account"))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input class="logout-btn" type="submit" value="Logout" />
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="body-container">
+        @RenderBody()
+    </div>
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</body>
+</html>
