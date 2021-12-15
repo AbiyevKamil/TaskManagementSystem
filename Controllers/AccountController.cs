@@ -139,6 +139,9 @@ namespace TaskManagementSystem.Controllers
                         Response.Cookies["AuthToken"].Value = cValue;
                         Response.Cookies["AuthToken"].Expires =
                             model.RememberMe ? DateTime.Now.AddDays(3) : DateTime.Now.AddHours(1);
+                        Response.Cookies["AuthRole"].Value = "true";
+                        Response.Cookies["AuthRole"].Expires =
+                            model.RememberMe ? DateTime.Now.AddDays(3) : DateTime.Now.AddHours(1);
                         return RedirectToAction("Index", "Home");
                     }
                     else
@@ -156,6 +159,9 @@ namespace TaskManagementSystem.Controllers
                             Hasher.Encrypt(oldWorkerUser.Id.ToString());
                         Response.Cookies["AuthToken"].Value = cValue;
                         Response.Cookies["AuthToken"].Expires =
+                            model.RememberMe ? DateTime.Now.AddDays(3) : DateTime.Now.AddHours(1);
+                        Response.Cookies["AuthRole"].Value = "false";
+                        Response.Cookies["AuthRole"].Expires =
                             model.RememberMe ? DateTime.Now.AddDays(3) : DateTime.Now.AddHours(1);
                         return RedirectToAction("Index", "Home");
                     }

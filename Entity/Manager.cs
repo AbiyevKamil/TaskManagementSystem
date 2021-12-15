@@ -21,6 +21,8 @@ namespace TaskManagementSystem.Entity
         public string Password { get; set; }
         [Required]
         public DateTime RegisteredDate { get; set; }
+        [DefaultValue(true)]
+        public bool IsManager { get; set; }
 
         public ICollection<Task> Tasks { get; set; }
     }
